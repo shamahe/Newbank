@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Person Form</h2>
+<div class="container">
+
+    <form action="contact_form" method="post" id="personForm"
+          data-branches-url="{% url 'accountapp:ajax_load_branches' %}" validate>
+        {% csrf_token %}
+        <table>
+            {{ form.as_p }}
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'accountapp:logout' %}"><br>
+        <button style="color:blue;" class="GFG">
+            Logout
+        </button>
+    </a>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <script>
+
+        $("#id_district").change(function () {
+        var url = $("#personForm").attr("data-branches-url");
+        var districtId = $(this).val();
+
+        $.ajax({
+         url: url,
+        data: {
+          'district': districtId
+        },
+        success: function (data) {
+          $("#id_branch").html(data);
+        }
+        });
+
+        });
+
+
+        </script>
+</div>
+{% endblock %}
